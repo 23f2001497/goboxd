@@ -1,37 +1,36 @@
 # Plan Evolution
 
-## Day 1
+## 2026-05-24 · What I thought the project was
 
-* Repository setup
-* Branch creation
-* Health endpoint implementation
+**What we thought we'd do:**
+Initially read the spec and assumed Stage 1 was mainly about scaffolding — a Go HTTP server that accepted requests and returned a placeholder response, with the real execution logic coming later.
 
-## Day 2
+**What we actually did:**
+After reading more carefully and looking at the evaluation criteria, we realised the expectation was a working execution pipeline: receive code, write it to disk, run it, return real output.
 
-* Run endpoint implementation
+**Why it changed:**
+The spec was clearer on re-reading than on first pass. The phrase "working prototype" in the evaluation section was the key signal. Scaffolding with stubbed responses wouldn't satisfy that.
 
-## Day 3
 
-* Workspace manager implementation
+## 2026-05-27 · Realising documentation was a scored deliverable, not an afterthought
 
-## Day 4
+**What we thought we'd do:**
+Write docs at the end once the code was done.
 
-* Source file generation
+**What we actually did:**
+Started writing architecture, API and security docs in parallel with implementation rather than after.
 
-## Day 5
+**Why it changed:**
+The maintainer's discussion post (#5) made it explicit that SDLC discipline — including documentation — is part of the review criteria, not separate from it. Leaving docs to the last day would mean rushed, shallow coverage that a reviewer would notice.
 
-* Python execution support
 
-## Day 6
+## 2026-06-01 · Narrowing scope before the deadline
 
-* Request validation
-* Automated tests
-* Documentation
+**What we thought we'd do:**
+Add at least one more language beyond Python before Stage 1 submission.
 
-## Future Roadmap
+**What we actually did:**
+Kept Python only and used the time to make the documentation complete.
 
-* Sandbox integration
-* Resource limits
-* Additional languages
-* Security hardening
-* Performance improvements
+**Why it changed:**
+A second language would have required testing and doc updates to stay consistent. The risk of introducing a half-working feature outweighed the benefit. A clean single-language implementation with accurate docs felt more aligned with what Stage 1 actually rewards.
