@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/thesouldev/goboxd/internal/executor"
 	"github.com/thesouldev/goboxd/internal/models"
 	"github.com/thesouldev/goboxd/internal/workspace"
 )
@@ -34,8 +35,12 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("Written file to path: %s", filePath)
 
+	res, err := executor.Run(filePath)
+	if err != nil {
+		http.Error(w, "execution error", 500)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{
-		"status": "accepted",
-	})
+	json.NewEncoder(w).Encode(res)
 }
