@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/thesouldev/goboxd/internal/api"
 )
 
 func healthzHandler(w http.ResponseWriter, r *http.Request) {
@@ -18,6 +20,7 @@ func healthzHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/healthz", healthzHandler)
+	http.HandleFunc("/run", api.RunHandler)
 
 	log.Println("goboxd running on :8080")
 
