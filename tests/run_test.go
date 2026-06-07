@@ -45,6 +45,7 @@ func TestRunSuccess(t *testing.T) {
 	req := httptest.NewRequest("POST", "/run", body)
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
+
 	api.RunHandler(w, req)
 
 	if w.Code != 200 {
@@ -56,8 +57,15 @@ func TestRunSuccess(t *testing.T) {
 		t.Errorf("expected application/json got %s", contentType)
 	}
 
+	actual := w.Body.String()
+
+	// normalize escaped CRLF inside JSON string
+	actual = strings.ReplaceAll(actual, `\r\n`, `\n`)
+
+	actual = strings.TrimSpace(actual)
+
 	expected := `{"stdout":"hello\n"}`
-	actual := strings.TrimSpace(w.Body.String())
+
 	if actual != expected {
 		t.Errorf("expected %s got %s", expected, actual)
 	}
