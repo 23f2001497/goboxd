@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"os/exec"
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/thesouldev/goboxd/internal/models"
@@ -35,11 +34,18 @@ func Run(filePath string) (*models.RunResponse, error) {
 	}
 
 	//Runtime error
-	if err !=nil{
+	// if err !=nil{
+	// 	return &models.RunResponse{
+	// 		Stdout: stdout.String(),
+	// 		Stderr: stderr.String(),
+	// 		Error: fmt.Sprintf("runtime_error: %v", err),
+	// 	}, nil
+	// }
+	if err != nil {
 		return &models.RunResponse{
 			Stdout: stdout.String(),
 			Stderr: stderr.String(),
-			Error: fmt.Sprintf("runtime_error: %v", err),
+			Error:  "runtime_error",
 		}, nil
 	}
 	//Success
