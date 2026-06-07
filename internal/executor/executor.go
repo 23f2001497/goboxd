@@ -5,20 +5,27 @@ import (
 	"os/exec"
 	"context"
 	"time"
-
+	"strings"
 	"github.com/thesouldev/goboxd/internal/models"
 )
 
 const executionTimeout = 5*time.Second
-
-func Run(filePath string) (*models.RunResponse, error) {
+func Run(
+	filePath string,
+	stdin string,
+) (*models.RunResponse, error) {
 	ctx, cancel := context.WithTimeout(
 		context.Background(),
 		executionTimeout,
 	)
 	defer cancel()
 
-	cmd := exec.Command("python3", filePath)
+	cmd := exec.CommandContext(
+		ctx,
+		"python3",
+		filePath,
+	)
+	cmd.Stdin = strings.NewReader(stdin)
 
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout

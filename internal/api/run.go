@@ -59,7 +59,10 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("Written file to path: %s", filePath)
 
-	res, err := executor.Run(filePath)
+	res, err := executor.Run(
+		filePath,
+		req.Stdin,
+	)
 	if err != nil {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusInternalServerError)

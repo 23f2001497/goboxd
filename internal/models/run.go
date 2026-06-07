@@ -3,6 +3,7 @@ package models
 type RunRequest struct {
 	Language string `json:"language"`
 	Source   string `json:"source"`
+	Stdin    string `json:"stdin,omitempty"`
 }
 
 type RunResponse struct {
