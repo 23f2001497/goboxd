@@ -7,7 +7,10 @@ type RunRequest struct {
 }
 
 type RunResponse struct {
-	Stdout string `json:"stdout"`
+	Status string `json:"status"`
+
+	Stdout string `json:"stdout,omitempty"`
 	Stderr string `json:"stderr,omitempty"`
-	Error  string `json:"error,omitempty"`
+
+	Error string `json:"error,omitempty"`
 }

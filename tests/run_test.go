@@ -64,7 +64,7 @@ func TestRunSuccess(t *testing.T) {
 
 	actual = strings.TrimSpace(actual)
 
-	expected := `{"stdout":"hello\n"}`
+	expected := `{"status":"accepted","stdout":"hello\n"}`
 
 	if actual != expected {
 		t.Errorf("expected %s got %s", expected, actual)
