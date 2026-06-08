@@ -32,3 +32,51 @@ Python only for Stage 1.
 
 **Rationale:**
 Adding a second language without adequate testing coverage and documentation updates would introduce inconsistency between the code and the docs. A reviewer would notice. A single language done well is a stronger signal than two languages done partially.
+
+## Timeout enforcement using context-aware process execution
+
+**Context:**
+User-submitted programs may contain infinite loops.
+
+**Options considered:**
+
+1. Kill processes manually using OS signals.
+2. Use context.WithTimeout with exec.CommandContext.
+
+**Decision:**
+Use context.WithTimeout combined with exec.CommandContext.
+
+**Rationale:**
+This approach integrates directly with Go's process execution model and keeps timeout logic simple and testable.
+
+## Passing stdin through strings.NewReader
+
+**Context:**
+Programs using input() could not receive user input.
+
+**Options considered:**
+
+1. Hardcode input values.
+2. Pass request stdin directly into the process.
+
+**Decision:**
+Attach stdin using strings.NewReader.
+
+**Rationale:**
+This allows arbitrary user input while keeping the execution pipeline simple.
+
+## Execution Status Classification
+
+**Context:**
+The API originally returned stdout and error fields only.
+
+**Options considered:**
+
+1. Infer execution state from stdout and error fields.
+2. Add an explicit execution status field.
+
+**Decision:**
+Add a status field with values accepted, runtime_error and time_exceeded.
+
+**Rationale:**
+This makes execution outcomes explicit and aligns better with online judge systems.

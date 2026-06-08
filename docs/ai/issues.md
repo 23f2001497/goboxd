@@ -28,3 +28,70 @@ Identified the platform difference. Documented that output normalisation (stripp
 
 **What we learned:**
 String equality on output is fragile across platforms. Normalise before comparing, or test for content rather than exact byte matches.
+
+## 2026-06-06 · Timeout logic existed but was not enforced
+
+**What we were trying to do:**
+Prevent user programs from running forever.
+
+**What went wrong:**
+The implementation created a context using context.WithTimeout(), but execution still used exec.Command() instead of exec.CommandContext().
+
+This meant the timeout context existed but was never attached to the Python process.
+
+Programs such as:
+
+```python
+while True:
+    pass
+```
+
+continued running indefinitely.
+
+**How we resolved it:**
+Replaced exec.Command() with exec.CommandContext() and attached the timeout context directly to the executed process.
+
+Verified by running an infinite loop and confirming the API returned:
+
+```json
+{
+  "error": "time_exceeded"
+}
+```
+
+**What we learned:**
+Creating a timeout context is not enough. The executed process must explicitly use that context.
+
+## 2026-06-07 · Cross-platform test failure caused by Windows line endings
+
+**What we were trying to do:**
+Validate execution output in automated tests.
+
+**What went wrong:**
+Python on Windows produced CRLF line endings (\r\n) while the test expected LF (\n).
+
+The execution result was correct but the test still failed.
+
+**How we resolved it:**
+Adjusted the test comparison to account for platform-specific line endings.
+
+The production code was left unchanged because the issue existed only in test assertions.
+
+**What we learned:**
+Tests should validate behavior, not platform-specific formatting details.
+
+## 2026-06-08 · Timeout implementation existed but was ineffective
+
+**What we were trying to do:**
+Terminate long-running programs after a fixed timeout.
+
+**What went wrong:**
+The implementation created a timeout context but executed programs using exec.Command() rather than exec.CommandContext().
+
+As a result, the timeout was never attached to the process.
+
+**How we resolved it:**
+Replaced exec.Command() with exec.CommandContext().
+
+**What we learned:**
+Timeout contexts must be attached directly to the process being executed.

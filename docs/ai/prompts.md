@@ -46,3 +46,27 @@ AI suggested: execution latency per language, workspace creation and cleanup tim
 
 **What we used / didn't use:**
 Used the idea of separating workspace overhead from actual execution time — that's a meaningful distinction for our architecture. Used the concurrency angle since we don't have a request slot limiter yet and that's worth flagging. Didn't use the cold start framing since we don't have any caching layer that would make that distinction meaningful.
+
+## 2026-06-06 · Verifying timeout implementation
+
+**Prompt:**
+I added context.WithTimeout to my executor. Does this guarantee that infinite loops are terminated?
+
+**Response summary:**
+AI explained that exec.CommandContext must be used. Creating a timeout context alone is insufficient.
+
+**What we used / didn't use:**
+Used the recommendation to switch to exec.CommandContext.
+Ignored alternative approaches involving manual process termination because they added unnecessary complexity.
+
+## 2026-06-07 · Designing stdin support
+
+**Prompt:**
+How should I pass user input into executed Python programs while keeping the API simple?
+
+**Response summary:**
+AI suggested adding a stdin field to the request model and attaching it to the process using strings.NewReader.
+
+**What we used / didn't use:**
+Used the stdin request field and strings.NewReader approach.
+Did not implement interactive streaming input because it was unnecessary for Stage 1.
